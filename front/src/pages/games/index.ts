@@ -1,3 +1,3 @@
-import { Games } from './ui/Games';
+import { Games } from './ui/Games'
 
-export default Games;
+export default Games

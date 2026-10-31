@@ -1,23 +1,23 @@
-import { FC } from 'react';
+import type { JSX } from 'react'
 
-import { useGLTF } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
 
-import { Model } from '../config';
+import { Model } from '../config'
 
-import { Camera } from './Camera';
-import { Close } from './Close/Close';
-import { GameOver } from './GameOver/GameOver';
-import { Light } from './Light';
-import { Loading } from './Loading/Loading';
-import { Map } from './Map';
-import { Player } from './Player';
-import { Score } from './Score/Score';
+import { Camera } from './Camera'
+import { Close } from './Close/Close'
+import { GameOver } from './GameOver/GameOver'
+import { Light } from './Light'
+import { Loading } from './Loading/Loading'
+import { Map } from './Map'
+import { Player } from './Player'
+import { Score } from './Score/Score'
 
-import s from './CrossyRoad.module.scss';
+import s from './CrossyRoad.module.scss'
 
-export const CrossyRoad: FC = () => {
-  useGLTF.preload(Model.Chicken);
+export const CrossyRoad = (): JSX.Element => {
+  useGLTF.preload(Model.Chicken)
 
   return (
     <div className={s.crossyRoad}>
@@ -33,5 +33,5 @@ export const CrossyRoad: FC = () => {
         <Map />
       </Canvas>
     </div>
-  );
-};
+  )
+}

@@ -1,14 +1,14 @@
-import { FC } from 'react';
+import type { JSX } from 'react'
 
-import { WheelSize } from '../config';
+import { WheelSize } from '../config'
 
-import { wheelGeometry, wheelMaterial } from '../lib';
+import { wheelGeometry, wheelMaterial } from '../lib'
 
 interface WheelProps {
-  position: [number, number];
+  position: [number, number]
 }
 
-export const Wheel: FC<WheelProps> = ({ position }) => (
+export const Wheel = ({ position }: WheelProps): JSX.Element => (
   <mesh
     geometry={wheelGeometry}
     material={wheelMaterial}
@@ -16,4 +16,4 @@ export const Wheel: FC<WheelProps> = ({ position }) => (
     castShadow
     receiveShadow
   />
-);
+)

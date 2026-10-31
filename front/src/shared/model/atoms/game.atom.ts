@@ -1,5 +1,8 @@
-import { atom } from 'jotai';
+import { atom } from 'jotai'
 
-import { Game } from '@/shared/config';
+import type { GameId } from '@/shared/config'
 
-export const gameAtom = atom<Game | null>(null);
+/**
+ * Id of the game open on the home screen, or `null` while the carousel is shown.
+ */
+export const gameAtom = atom<GameId | null>(null)

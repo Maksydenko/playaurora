@@ -1,1 +1,1 @@
-export * from './getPropertyValue.util';
+export * from './getPropertyValue.util'

@@ -1,35 +1,36 @@
-import { nanoid } from 'nanoid';
-import * as THREE from 'three';
+import { nanoid } from 'nanoid'
+import * as THREE from 'three'
 
-import { Direction } from '@/shared/model';
+import { Direction } from '@/shared/model'
 
-import { Tile, TileType, VehicleSpeed } from '../../config';
+import { Tile, TileType, vehicleColors, VehicleSpeed } from '../../config'
 
-import { chooseRandomElement } from './chooseRandomElement.util';
+import { chooseRandomElement } from './chooseRandomElement.util'
 
-import { IRowData } from '../interfaces';
+import type { RowData } from '../types'
 
-export const generateRoad = (): IRowData => {
-  const direction: Direction.Left | Direction.Right = chooseRandomElement([
-    Direction.Left,
-    Direction.Right
-  ]);
-  const speed = THREE.MathUtils.randInt(VehicleSpeed.Min, VehicleSpeed.Max);
-  const vehicles = [];
+/**
+ * Builds a road row with cars traveling one way.
+ *
+ * @returns The road row.
+ */
+export const generateRoad = (): RowData => {
+  const direction: typeof Direction.Left | typeof Direction.Right =
+    chooseRandomElement([Direction.Left, Direction.Right])
+  const speed = THREE.MathUtils.randInt(VehicleSpeed.Min, VehicleSpeed.Max)
+  const vehicles = []
 
-  let pos = Tile.Min + THREE.MathUtils.randInt(0, 3);
+  let pos = Tile.Min + THREE.MathUtils.randInt(0, 3)
 
   while (pos < Tile.PerRow) {
     vehicles.push({
-      color: chooseRandomElement([
-        0x0288d1, 0x7cb342, 0xab47bc, 0xef5350, 0xffb300
-      ]),
+      color: chooseRandomElement(vehicleColors),
       id: nanoid(),
       initialTileIndex: pos
-    });
+    })
 
-    const gap = THREE.MathUtils.randInt(3, 6);
-    pos += gap;
+    const gap = THREE.MathUtils.randInt(3, 6)
+    pos += gap
   }
 
   return {
@@ -38,5 +39,5 @@ export const generateRoad = (): IRowData => {
     speed,
     type: TileType.Road,
     vehicles
-  };
-};
+  }
+}

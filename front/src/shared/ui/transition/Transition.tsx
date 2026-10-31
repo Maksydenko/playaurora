@@ -1,22 +1,23 @@
-import { FC, ReactNode } from 'react';
-import { clsx } from 'clsx';
+import type { JSX, ReactNode } from 'react'
 
-import { Transition as RootTransition } from '@headlessui/react';
+import { clsx } from 'clsx'
 
-import s from './Transition.module.scss';
+import { Transition as RootTransition } from '@headlessui/react'
+
+import s from './Transition.module.scss'
 
 interface TransitionProps {
-  children: ReactNode;
-  className?: string;
-  isShow: boolean;
+  children: ReactNode
+  className?: string
+  isShow: boolean
 }
 
-export const Transition: FC<TransitionProps> = ({
+export const Transition = ({
   children,
   className,
   isShow
-}) => (
+}: TransitionProps): JSX.Element => (
   <RootTransition show={isShow} transition>
     <div className={clsx(s.transition, className)}>{children}</div>
   </RootTransition>
-);
+)

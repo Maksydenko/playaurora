@@ -1,49 +1,55 @@
-import { FC, useEffect, useRef } from 'react';
-import { useSetAtom } from 'jotai';
-import * as THREE from 'three';
+import { type JSX, useEffect, useRef } from 'react'
 
-import { OrthographicCamera } from '@react-three/drei';
+import { useSetAtom } from 'jotai'
+import type * as THREE from 'three'
 
-import { Breakpoint } from '@/shared/config';
+import { OrthographicCamera } from '@react-three/drei'
 
-import { CameraPosition } from '../config';
+import { Breakpoint } from '@/shared/config'
 
-import { cameraAtom } from '../model';
+import { CameraPosition, CameraZoom } from '../config'
 
-export const Camera: FC = () => {
-  const cameraRef = useRef<THREE.OrthographicCamera>(null);
-  const setCamera = useSetAtom(cameraAtom);
+import { cameraAtom } from '../model'
 
+export const Camera = (): JSX.Element => {
+  const cameraRef = useRef<THREE.OrthographicCamera>(null)
+  const setCamera = useSetAtom(cameraAtom)
+
+  /**
+   * Keeps the orthographic zoom aligned with the viewport width.
+   *
+   * @remarks Drops the shared camera atom when the camera unmounts.
+   */
   useEffect(() => {
-    const cameraElement = cameraRef.current;
-    setCamera(cameraElement);
+    const cameraElement = cameraRef.current
+    setCamera(cameraElement)
 
     if (!cameraElement) {
-      return;
+      return
     }
 
     const updateZoom = () => {
-      const width = window.innerWidth;
+      const width = window.innerWidth
 
       if (width < Breakpoint.Mobile) {
-        cameraElement.zoom = 2.0;
+        cameraElement.zoom = CameraZoom.Mobile
       } else if (width < Breakpoint.Tablet) {
-        cameraElement.zoom = 3.2;
+        cameraElement.zoom = CameraZoom.Tablet
       } else {
-        cameraElement.zoom = 4;
+        cameraElement.zoom = CameraZoom.Desktop
       }
 
-      cameraElement.updateProjectionMatrix();
-    };
+      cameraElement.updateProjectionMatrix()
+    }
 
-    updateZoom();
-    window.addEventListener('resize', updateZoom);
+    updateZoom()
+    window.addEventListener('resize', updateZoom)
 
     return () => {
-      setCamera(null);
-      window.removeEventListener('resize', updateZoom);
-    };
-  }, [setCamera]);
+      setCamera(null)
+      window.removeEventListener('resize', updateZoom)
+    }
+  }, [setCamera])
 
   return (
     <OrthographicCamera
@@ -52,8 +58,8 @@ export const Camera: FC = () => {
       near={0.1}
       position={[CameraPosition.X, CameraPosition.Y, CameraPosition.Z]}
       up={[0, 0, 1]}
-      zoom={4}
+      zoom={CameraZoom.Desktop}
       makeDefault
     />
-  );
-};
+  )
+}

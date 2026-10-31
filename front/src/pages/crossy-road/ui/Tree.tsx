@@ -1,20 +1,20 @@
-import { FC } from 'react';
+import type { JSX } from 'react'
 
-import { Tile, TreeSize } from '../config';
+import { Tile, TreeSize } from '../config'
 
 import {
   getTreeLeavesGeometry,
   treeLeavesMaterial,
   treeTrunkGeometry,
   treeTrunkMaterial
-} from '../lib';
+} from '../lib'
 
 interface ThreeProps {
-  height: number;
-  position: [number, number];
+  height: number
+  position: [number, number]
 }
 
-export const Tree: FC<ThreeProps> = ({ height, position }) => (
+export const Tree = ({ height, position }: ThreeProps): JSX.Element => (
   <group position={[...position, 0]}>
     {/* Thunk */}
     <mesh
@@ -33,4 +33,4 @@ export const Tree: FC<ThreeProps> = ({ height, position }) => (
       receiveShadow
     />
   </group>
-);
+)

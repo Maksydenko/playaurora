@@ -1,2 +1,2 @@
-export * from './game.data';
-export * from './service.data';
+export * from './game.data'
+export * from './service.data'

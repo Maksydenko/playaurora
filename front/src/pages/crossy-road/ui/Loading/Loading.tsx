@@ -1,44 +1,45 @@
-import { FC, useEffect } from 'react';
-import clsx from 'clsx';
-import { useAtom } from 'jotai';
+import { type JSX, useEffect } from 'react'
 
-import { getPropertyValue, Time } from '@/shared/model';
-import { Transition } from '@/shared/ui';
+import clsx from 'clsx'
+import { useAtom } from 'jotai'
 
-import { gameStateAtom } from '../../model';
+import { getPropertyValue, Time } from '@/shared/model'
+import { Transition } from '@/shared/ui'
 
-import { Loader } from '../Loader/Loader';
+import { gameStateAtom } from '../../model'
 
-import s from './Loading.module.scss';
+import { Loader } from '../Loader/Loader'
+
+import s from './Loading.module.scss'
 
 interface LoadingProps {
-  className?: string;
+  className?: string
 }
 
-export const Loading: FC<LoadingProps> = ({ className }) => {
-  const [{ isLoading }, setGameState] = useAtom(gameStateAtom);
-  const loaderTime = getPropertyValue('--crossyRoadLoaderTime');
+export const Loading = ({ className }: LoadingProps): JSX.Element => {
+  const [{ isLoading }, setGameState] = useAtom(gameStateAtom)
+  const loaderTime = getPropertyValue('--crossy-road-loader-time')
 
   useEffect(() => {
     if (!isLoading) {
-      return;
+      return
     }
 
     const timeout = setTimeout(() => {
       setGameState(prev => ({
         ...prev,
         isLoading: false
-      }));
-    }, loaderTime * Time.MillisecondsInSecond);
+      }))
+    }, loaderTime * Time.MillisecondsInSecond)
 
     return () => {
-      clearTimeout(timeout);
-    };
-  }, [isLoading, loaderTime, setGameState]);
+      clearTimeout(timeout)
+    }
+  }, [isLoading, loaderTime, setGameState])
 
   return (
     <Transition className={clsx(s.loading, className)} isShow={isLoading}>
       <Loader />
     </Transition>
-  );
-};
+  )
+}

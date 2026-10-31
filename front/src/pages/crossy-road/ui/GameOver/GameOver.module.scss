@@ -25,7 +25,7 @@
     inline-size: 100%;
     padding: m.rem(24) m.rem(16);
     font-size: m.rem(32);
-    color: m.$lightColor;
+    color: m.$light-color;
     text-align: center;
     text-transform: capitalize;
 
@@ -34,7 +34,7 @@
       inset: 0;
       z-index: -1;
       content: '';
-      background: #f86332;
+      background: hsl(15 93% 58%);
       opacity: 0.8;
     }
   }
@@ -53,9 +53,9 @@
     padding: m.rem(24);
     font-size: m.rem(24);
     text-transform: capitalize;
-    background: #57c7fa;
+    background: hsl(199 94% 66%);
     translate: -50% 0;
 
-    @include m.textNowrap;
+    @include m.text-nowrap;
   }
 }

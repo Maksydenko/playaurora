@@ -1,13 +1,23 @@
-export enum Time {
-  DaysInWeek = 7,
-  HoursInDay = 24,
-  MillisecondsInSecond = 1000,
-  MinutesInHour = 60,
-  /* eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values */
-  SecondsInMinute = 60,
-  MillisecondsInDay = Time.HoursInDay *
-    Time.MinutesInHour *
-    Time.SecondsInMinute *
-    Time.MillisecondsInSecond,
-  MillisecondsInWeek = Time.DaysInWeek * Time.MillisecondsInDay
-}
+import type { ValueOf } from '../types'
+
+const DAYS_IN_WEEK = 7
+const HOURS_IN_DAY = 24
+const MILLISECONDS_IN_SECOND = 1000
+const MINUTES_IN_HOUR = 60
+const SECONDS_IN_MINUTE = 60
+const MILLISECONDS_IN_DAY =
+  HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND
+
+/**
+ * Calendar and clock unit sizes.
+ */
+export const Time = {
+  DaysInWeek: DAYS_IN_WEEK,
+  HoursInDay: HOURS_IN_DAY,
+  MillisecondsInDay: MILLISECONDS_IN_DAY,
+  MillisecondsInSecond: MILLISECONDS_IN_SECOND,
+  MillisecondsInWeek: DAYS_IN_WEEK * MILLISECONDS_IN_DAY,
+  MinutesInHour: MINUTES_IN_HOUR,
+  SecondsInMinute: SECONDS_IN_MINUTE
+} as const
+export type Time = ValueOf<typeof Time>

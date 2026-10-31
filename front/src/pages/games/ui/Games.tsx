@@ -1,6 +1,7 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { clsx } from 'clsx';
-import { useAtom } from 'jotai';
+import { type FC, useEffect, useRef, useState } from 'react'
+
+import { clsx } from 'clsx'
+import { useAtom } from 'jotai'
 
 import {
   Direction,
@@ -11,152 +12,153 @@ import {
   useSwipe,
   useWheel,
   useWindowListener
-} from '@/shared/model';
+} from '@/shared/model'
 
-import { gameData, IGame, IService, serviceData } from '../model';
+import { type Game, gameData, type Service, serviceData } from '../model'
 
-import s from './Games.module.scss';
+import s from './Games.module.scss'
 
 interface GamesProps {
-  className?: string;
+  className?: string
 }
 
 export const Games: FC<GamesProps> = ({ className }) => {
-  const [activeIndex, setActiveIndex] = useState(serviceData.length);
-  const containerRef = useRef<HTMLUListElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(serviceData.length)
+  const containerRef = useRef<HTMLUListElement | null>(null)
 
-  const [gameId, setGameId] = useAtom(gameAtom);
+  const [gameId, setGameId] = useAtom(gameAtom)
 
-  const cardSize = getPropertyValue('--cardSize');
-  const cardGap = getPropertyValue('--cardGap');
+  const cardSize = getPropertyValue('--cardSize')
+  const cardGap = getPropertyValue('--cardGap')
 
   const translateX =
     activeIndex > 1
       ? (cardSize + cardGap) * (activeIndex - 1) - cardSize / 2.6
-      : 0;
+      : 0
 
   const nextGame = () => {
     setActiveIndex(prev =>
       Math.min(prev + 1, serviceData.length + gameData.length - 1)
-    );
-  };
+    )
+  }
   const prevGame = () => {
-    setActiveIndex(prev => Math.max(prev - 1, 0));
-  };
+    setActiveIndex(prev => Math.max(prev - 1, 0))
+  }
 
   const openGame = () => {
-    const allItems = [...serviceData, ...gameData];
-    const currentItem = allItems[activeIndex];
+    const allItems = [...serviceData, ...gameData]
+    const currentItem = allItems[activeIndex]
 
-    if (serviceData.includes(currentItem as IService)) {
-      window.open((currentItem as IService).link, '_blank');
+    if (serviceData.includes(currentItem as Service)) {
+      window.open((currentItem as Service).link, '_blank')
     }
 
-    if (gameData.includes(currentItem as IGame)) {
-      setGameId((currentItem as IGame).id);
+    if (gameData.includes(currentItem as Game)) {
+      setGameId((currentItem as Game).id)
     }
-  };
+  }
 
   const switchers: Partial<Record<Direction, () => void>> = {
     [Direction.Left]: () => {
-      prevGame();
+      prevGame()
     },
     [Direction.Right]: () => {
-      nextGame();
+      nextGame()
     }
-  };
+  }
 
   const handlers: Partial<Record<GamepadButton, () => void>> = {
     [GamepadButton.Cross]: () => {
-      openGame();
+      openGame()
     },
     [GamepadButton.Left]: () => {
-      prevGame();
+      prevGame()
     },
     [GamepadButton.Right]: () => {
-      nextGame();
+      nextGame()
     }
-  };
+  }
 
   const handleKeyDown = ({ code }: KeyboardEvent) => {
     if (gameId) {
-      return;
+      return
     }
 
     if (['ArrowLeft', 'KeyA'].includes(code)) {
-      prevGame();
+      prevGame()
     }
 
     if (['ArrowRight', 'KeyD'].includes(code)) {
-      nextGame();
+      nextGame()
     }
 
     if (['Enter', 'NumpadEnter'].includes(code)) {
-      openGame();
+      openGame()
     }
-  };
+  }
 
   useWindowListener({
     listener: handleKeyDown,
     type: 'keydown'
-  });
+  })
 
   useWheel((deltaY: number) => {
     if (gameId) {
-      return;
+      return
     }
 
     if (deltaY > 0) {
-      nextGame();
+      nextGame()
     }
+
     if (deltaY < 0) {
-      prevGame();
+      prevGame()
     }
-  });
+  })
 
   useSwipe(
     (dir: Direction) => {
       if (gameId) {
-        return;
+        return
       }
 
-      switchers[dir]?.();
+      switchers[dir]?.()
     },
     () => {
       if (gameId) {
-        return;
+        return
       }
 
-      openGame();
+      openGame()
     }
-  );
+  )
 
   useGamepad({
     onButton: btn => {
       if (gameId) {
-        return;
+        return
       }
 
-      handlers[btn as GamepadButton]?.();
+      handlers[btn as GamepadButton]?.()
     },
     onStick: dir => {
       if (gameId) {
-        return;
+        return
       }
 
-      switchers[dir]?.();
+      switchers[dir]?.()
     }
-  });
+  })
 
   useEffect(() => {
-    const containerElement = containerRef.current;
+    const containerElement = containerRef.current
 
     if (!containerElement) {
-      return;
+      return
     }
 
-    containerElement.style.translate = `-${translateX}px 0`;
-  }, [translateX]);
+    containerElement.style.translate = `-${translateX}px 0`
+  }, [translateX])
 
   return (
     <div className={clsx(s.games, className)}>
@@ -192,5 +194,5 @@ export const Games: FC<GamesProps> = ({ className }) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}

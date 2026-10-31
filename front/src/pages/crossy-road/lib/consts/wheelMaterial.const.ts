@@ -1,5 +1,6 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 
-export const wheelMaterial = new THREE.MeshLambertMaterial({
-  color: 0x000000
-});
+/**
+ * Shared black Lambert material used for every wheel.
+ */
+export const wheelMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 })

@@ -1,15 +1,15 @@
-import { FC } from 'react';
+import type { JSX } from 'react'
 
-import CrossyRoad from '@/pages/crossy-road';
-import Games from '@/pages/games';
+import CrossyRoad from '@/pages/crossy-road'
+import Games from '@/pages/games'
 
-import { Game as GameEnum } from '@/shared/config';
+import { GameId } from '@/shared/config'
 
-import { Game } from './Game/Game';
+import { Game } from './Game/Game'
 
-import s from './Home.module.scss';
+import s from './Home.module.scss'
 
-export const Home: FC = () => (
+export const Home = (): JSX.Element => (
   <div className={s.home}>
     <div className={s.home__body}>
       <Games className={s.home__games} />
@@ -17,12 +17,12 @@ export const Home: FC = () => (
         className={s.home__game}
         games={[
           {
-            id: GameEnum.CrossyRoad,
-            label: GameEnum.CrossyRoad,
+            id: GameId.CrossyRoad,
+            label: GameId.CrossyRoad,
             value: <CrossyRoad />
           }
         ]}
       />
     </div>
   </div>
-);
+)

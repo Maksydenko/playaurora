@@ -1,10 +1,16 @@
-import { atom } from 'jotai';
-import { Object3D } from 'three';
+import { atom } from 'jotai'
+import type { Object3D } from 'three'
 
-export interface IVehicleState {
-  id: string;
-  ref: null | Object3D;
-  rowIndex: number;
+/**
+ * A car tracked for collision, including its scene object.
+ */
+export interface VehicleState {
+  id: string
+  ref: null | Object3D
+  rowIndex: number
 }
 
-export const vehiclesAtom = atom<IVehicleState[]>([]);
+/**
+ * Cars currently on the road.
+ */
+export const vehiclesAtom = atom<VehicleState[]>([])
