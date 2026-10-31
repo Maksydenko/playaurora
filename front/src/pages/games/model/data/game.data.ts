@@ -1,15 +1,18 @@
-import { Game } from '@/shared/config';
+import { GameId } from '@/shared/config'
 
-import { IGame } from '../interfaces';
+import type { Game } from '../types'
 
-export const gameData: IGame[] = [
+/**
+ * Playable games shown on the home row.
+ */
+export const gameData: Game[] = [
   {
     component: () =>
       import('@/pages/crossy-road/ui/CrossyRoad').then(m => ({
         default: m.CrossyRoad
       })),
-    id: Game.CrossyRoad,
-    imageUrl: '/imgs/logos/games/crossy-road.png',
+    id: GameId.CrossyRoad,
+    imageUrl: '/images/logos/games/crossy-road.png',
     title: 'Crossy Road'
   }
-];
+]

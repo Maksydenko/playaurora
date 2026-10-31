@@ -1,42 +1,48 @@
-import { FC, useEffect, useRef } from 'react';
-import { useSetAtom } from 'jotai';
-import { nanoid } from 'nanoid';
-import { Mesh } from 'three';
+import { type JSX, useEffect, useRef } from 'react'
 
-import { useFrame } from '@react-three/fiber';
+import { useSetAtom } from 'jotai'
+import { nanoid } from 'nanoid'
+import type { Mesh } from 'three'
 
-import { Direction } from '@/shared/model';
+import { useFrame } from '@react-three/fiber'
 
-import { CarSize, Tile, WheelSize } from '../config';
+import { Direction } from '@/shared/model'
+
+import { CarSize, Tile, WheelSize } from '../config'
 
 import {
   carBodyGeometry,
   carGlassGeometry,
   carGlassMaterial,
   getCarMaterial
-} from '../lib';
+} from '../lib'
 
-import { vehiclesAtom } from '../model';
+import { vehiclesAtom } from '../model'
 
-import { Wheel } from './Wheel';
+import { Wheel } from './Wheel'
 
 interface CarProps {
-  color: number;
-  direction: Direction.Left | Direction.Right;
-  position: [number, number];
-  speed: number;
+  color: number
+  direction: typeof Direction.Left | typeof Direction.Right
+  position: [number, number]
+  speed: number
 }
 
-const WHEEL_VISIBLE_PART = 1;
+const WHEEL_VISIBLE_PART = 1
 
-export const Car: FC<CarProps> = ({ color, direction, position, speed }) => {
-  const setCars = useSetAtom(vehiclesAtom);
+export const Car = ({
+  color,
+  direction,
+  position,
+  speed
+}: CarProps): JSX.Element => {
+  const setCars = useSetAtom(vehiclesAtom)
 
-  const ref = useRef<Mesh>(null!);
-  const id = useRef(nanoid()).current;
+  const ref = useRef<Mesh>(null!)
+  const id = useRef(nanoid()).current
 
-  const positionX = -CarSize.X + WheelSize.X * 2 - WHEEL_VISIBLE_PART;
-  const positionReverseX = CarSize.X - WheelSize.X * 2 + WHEEL_VISIBLE_PART;
+  const positionX = -CarSize.X + WheelSize.X * 2 - WHEEL_VISIBLE_PART
+  const positionReverseX = CarSize.X - WheelSize.X * 2 + WHEEL_VISIBLE_PART
 
   useEffect(() => {
     setCars(prev => [
@@ -46,38 +52,39 @@ export const Car: FC<CarProps> = ({ color, direction, position, speed }) => {
         ref: ref.current,
         rowIndex: Math.round(position[1] / Tile.Size)
       }
-    ]);
+    ])
 
     return () => {
-      setCars(prev => prev.filter(car => car.id !== id));
-    };
-  }, [id, position, setCars]);
+      setCars(prev => prev.filter(car => car.id !== id))
+    }
+  }, [id, position, setCars])
 
   useFrame((_, delta) => {
-    const refElement = ref.current;
+    const refElement = ref.current
 
     if (!refElement) {
-      return;
+      return
     }
 
     // Move
     refElement.position.x +=
-      (direction === Direction.Right ? 1 : -1) * speed * delta;
+      (direction === Direction.Right ? 1 : -1) * speed * delta
 
     // Reset
     if (
       direction === Direction.Right &&
       refElement.position.x > Tile.Size * (Tile.PerRow + 1)
     ) {
-      refElement.position.x = -Tile.Size * (Tile.PerRow + 1);
+      refElement.position.x = -Tile.Size * (Tile.PerRow + 1)
     }
+
     if (
       direction === Direction.Left &&
       refElement.position.x < -Tile.Size * (Tile.PerRow + 1)
     ) {
-      refElement.position.x = Tile.Size * (Tile.PerRow + 1);
+      refElement.position.x = Tile.Size * (Tile.PerRow + 1)
     }
-  });
+  })
 
   return (
     <group
@@ -119,5 +126,5 @@ export const Car: FC<CarProps> = ({ color, direction, position, speed }) => {
       <Wheel position={[positionX, -CarSize.Y / 3.5]} />
       <Wheel position={[positionReverseX, -CarSize.Y / 3.5]} />
     </group>
-  );
-};
+  )
+}

@@ -1,17 +1,18 @@
-import { FC } from 'react';
-import { clsx } from 'clsx';
-import { useAtomValue } from 'jotai';
+import type { JSX } from 'react'
 
-import { positionXAtom } from '../../model';
+import { clsx } from 'clsx'
+import { useAtomValue } from 'jotai'
 
-import s from './Score.module.scss';
+import { positionXAtom } from '../../model'
+
+import s from './Score.module.scss'
 
 interface ScoreProps {
-  className?: string;
+  className?: string
 }
 
-export const Score: FC<ScoreProps> = ({ className }) => {
-  const score = useAtomValue(positionXAtom);
+export const Score = ({ className }: ScoreProps): JSX.Element => {
+  const score = useAtomValue(positionXAtom)
 
-  return <div className={clsx(s.score, className)}>{score.maxX}</div>;
-};
+  return <div className={clsx(s.score, className)}>{score.maxX}</div>
+}

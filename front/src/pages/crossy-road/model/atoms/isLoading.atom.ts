@@ -1,3 +1,6 @@
-import { atom } from 'jotai';
+import { atom } from 'jotai'
 
-export const isLoadingAtom = atom(true);
+/**
+ * Whether the Crossy Road scene is still loading.
+ */
+export const isLoadingAtom = atom(true)

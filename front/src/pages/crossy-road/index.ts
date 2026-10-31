@@ -1,3 +1,3 @@
-import { CrossyRoad } from './ui/CrossyRoad';
+import { CrossyRoad } from './ui/CrossyRoad'
 
-export default CrossyRoad;
+export default CrossyRoad

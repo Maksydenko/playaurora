@@ -1,23 +1,24 @@
-import { FC } from 'react';
-import { clsx } from 'clsx';
-import { useSetAtom } from 'jotai';
+import type { JSX } from 'react'
 
-import { CloseGame } from '@/features/close-game';
+import { clsx } from 'clsx'
+import { useSetAtom } from 'jotai'
 
-import { resetGameAtom } from '../../model';
+import { CloseGame } from '@/features/close-game'
 
-import s from './Close.module.scss';
+import { resetGameAtom } from '../../model'
+
+import s from './Close.module.scss'
 
 interface CloseProps {
-  className?: string;
+  className?: string
 }
 
-export const Close: FC<CloseProps> = ({ className }) => {
-  const resetGame = useSetAtom(resetGameAtom);
+export const Close = ({ className }: CloseProps): JSX.Element => {
+  const resetGame = useSetAtom(resetGameAtom)
 
   return (
     <CloseGame className={clsx(s.close, className)} resetGame={resetGame}>
       x
     </CloseGame>
-  );
-};
+  )
+}

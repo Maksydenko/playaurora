@@ -1,1 +1,1 @@
-export * from './CloseGame/CloseGame';
+export * from './CloseGame/CloseGame'

@@ -49,14 +49,14 @@ const generator = plop => {
         type: 'input',
         validate(value) {
           if (/.+/.test(value)) {
-            return true;
+            return true
           }
 
-          return 'Name is required';
+          return 'Name is required'
         }
       }
     ]
-  });
-};
+  })
+}
 
-export default generator;
+export default generator

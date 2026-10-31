@@ -1,28 +1,33 @@
-import { FC, ReactNode } from 'react';
-import { clsx } from 'clsx';
-import { useAtomValue } from 'jotai';
+import type { JSX, ReactNode } from 'react'
 
-import { Game as GameEnum } from '@/shared/config';
-import { gameAtom, IOption } from '@/shared/model';
-import { Transition } from '@/shared/ui';
+import { clsx } from 'clsx'
+import { useAtomValue } from 'jotai'
 
-import s from './Game.module.scss';
+import type { GameId } from '@/shared/config'
+import { gameAtom, type Option } from '@/shared/model'
+import { Transition } from '@/shared/ui'
+
+import s from './Game.module.scss'
 
 interface GameProps {
-  className?: string;
-  games: IOption<ReactNode, GameEnum>[];
+  className?: string
+  games: Option<ReactNode, GameId>[]
 }
 
-export const Game: FC<GameProps> = ({ className, games }) => {
-  const game = useAtomValue(gameAtom);
+export const Game = ({ className, games }: GameProps): JSX.Element => {
+  const game = useAtomValue(gameAtom)
 
   return (
     <div className={clsx(s.game, className)}>
       {games.map(({ id, label, value }) => (
-        <Transition key={id} isShow={game === label}>
+        <Transition
+          key={id}
+          className={s.game__overlay}
+          isShow={game === label}
+        >
           {value}
         </Transition>
       ))}
     </div>
-  );
-};
+  )
+}

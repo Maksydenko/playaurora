@@ -1,139 +1,175 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { clsx } from 'clsx';
-import { useAtom } from 'jotai';
+import { type FC, useEffect, useRef, useState } from 'react'
+
+import { clsx } from 'clsx'
+import { useAtom } from 'jotai'
 
 import {
   Direction,
   gameAtom,
+  GamepadButton,
   getPropertyValue,
+  useGamepad,
   useSwipe,
   useWheel,
   useWindowListener
-} from '@/shared/model';
+} from '@/shared/model'
 
-import { gameData, IGame, IService, serviceData } from '../model';
+import { type Game, gameData, type Service, serviceData } from '../model'
 
-import s from './Games.module.scss';
+import s from './Games.module.scss'
 
 interface GamesProps {
-  className?: string;
+  className?: string
 }
 
 export const Games: FC<GamesProps> = ({ className }) => {
-  const [activeIndex, setActiveIndex] = useState(serviceData.length);
-  const containerRef = useRef<HTMLUListElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(serviceData.length)
+  const containerRef = useRef<HTMLUListElement | null>(null)
 
-  const [game, setGame] = useAtom(gameAtom);
+  const [gameId, setGameId] = useAtom(gameAtom)
 
-  const cardSize = getPropertyValue('--cardSize');
-  const cardGap = getPropertyValue('--cardGap');
+  const cardSize = getPropertyValue('--cardSize')
+  const cardGap = getPropertyValue('--cardGap')
 
   const translateX =
     activeIndex > 1
       ? (cardSize + cardGap) * (activeIndex - 1) - cardSize / 2.6
-      : 0;
-
-  useEffect(() => {
-    const containerElement = containerRef.current;
-
-    if (!containerElement) {
-      return;
-    }
-
-    containerElement.style.translate = `-${translateX}px 0`;
-  }, [translateX]);
+      : 0
 
   const nextGame = () => {
     setActiveIndex(prev =>
       Math.min(prev + 1, serviceData.length + gameData.length - 1)
-    );
-  };
+    )
+  }
   const prevGame = () => {
-    setActiveIndex(prev => Math.max(prev - 1, 0));
-  };
+    setActiveIndex(prev => Math.max(prev - 1, 0))
+  }
 
   const openGame = () => {
-    const allItems = [...serviceData, ...gameData];
-    const currentItem = allItems[activeIndex];
+    const allItems = [...serviceData, ...gameData]
+    const currentItem = allItems[activeIndex]
 
-    if (serviceData.includes(currentItem as IService)) {
-      window.open((currentItem as IService).link, '_blank');
+    if (serviceData.includes(currentItem as Service)) {
+      window.open((currentItem as Service).link, '_blank')
     }
 
-    if (gameData.includes(currentItem as IGame)) {
-      setGame((currentItem as IGame).id);
+    if (gameData.includes(currentItem as Game)) {
+      setGameId((currentItem as Game).id)
     }
-  };
+  }
+
+  const switchers: Partial<Record<Direction, () => void>> = {
+    [Direction.Left]: () => {
+      prevGame()
+    },
+    [Direction.Right]: () => {
+      nextGame()
+    }
+  }
+
+  const handlers: Partial<Record<GamepadButton, () => void>> = {
+    [GamepadButton.Cross]: () => {
+      openGame()
+    },
+    [GamepadButton.Left]: () => {
+      prevGame()
+    },
+    [GamepadButton.Right]: () => {
+      nextGame()
+    }
+  }
 
   const handleKeyDown = ({ code }: KeyboardEvent) => {
-    if (game) {
-      return;
+    if (gameId) {
+      return
     }
 
     if (['ArrowLeft', 'KeyA'].includes(code)) {
-      prevGame();
+      prevGame()
     }
 
     if (['ArrowRight', 'KeyD'].includes(code)) {
-      nextGame();
+      nextGame()
     }
 
     if (['Enter', 'NumpadEnter'].includes(code)) {
-      openGame();
+      openGame()
     }
-  };
+  }
 
   useWindowListener({
     listener: handleKeyDown,
     type: 'keydown'
-  });
+  })
 
   useWheel((deltaY: number) => {
-    if (game) {
-      return;
+    if (gameId) {
+      return
     }
 
     if (deltaY > 0) {
-      nextGame();
+      nextGame()
     }
 
     if (deltaY < 0) {
-      prevGame();
+      prevGame()
     }
-  });
+  })
 
   useSwipe(
     (dir: Direction) => {
-      if (game) {
-        return;
+      if (gameId) {
+        return
       }
 
-      if (dir === Direction.Left) {
-        prevGame();
-      }
-      if (dir === Direction.Right) {
-        nextGame();
-      }
+      switchers[dir]?.()
     },
     () => {
-      if (game) {
-        return;
+      if (gameId) {
+        return
       }
 
-      openGame();
+      openGame()
     }
-  );
+  )
+
+  useGamepad({
+    onButton: btn => {
+      if (gameId) {
+        return
+      }
+
+      handlers[btn as GamepadButton]?.()
+    },
+    onStick: dir => {
+      if (gameId) {
+        return
+      }
+
+      switchers[dir]?.()
+    }
+  })
+
+  useEffect(() => {
+    const containerElement = containerRef.current
+
+    if (!containerElement) {
+      return
+    }
+
+    containerElement.style.translate = `-${translateX}px 0`
+  }, [translateX])
 
   return (
     <div className={clsx(s.games, className)}>
       <ul ref={containerRef} className={s.games__list}>
-        {serviceData.map((service, index) => (
+        {serviceData.map((service, i) => (
           <li
             key={service.title}
             className={clsx(
               s.games__item,
               s.games__item_mini,
-              index === activeIndex && s.games__item_active
+              i === activeIndex && s.games__item_active
             )}
           >
             <div className={s.games__logo}>
@@ -142,12 +178,12 @@ export const Games: FC<GamesProps> = ({ className }) => {
             <h2 className={s.games__title}>{service.title}</h2>
           </li>
         ))}
-        {gameData.map((game, index) => (
+        {gameData.map((game, i) => (
           <li
             key={game.id}
             className={clsx(
               s.games__item,
-              index + serviceData.length === activeIndex && s.games__item_active
+              i + serviceData.length === activeIndex && s.games__item_active
             )}
           >
             <div className={s.games__logo}>
@@ -158,5 +194,5 @@ export const Games: FC<GamesProps> = ({ className }) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}

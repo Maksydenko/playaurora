@@ -1,9 +1,10 @@
-import { FC, useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { type JSX, useEffect, useRef } from 'react'
 
-import { useGLTF } from '@react-three/drei';
+import type * as THREE from 'three'
 
-import { Model } from '../config';
+import { useGLTF } from '@react-three/drei'
+
+import { Model } from '../config'
 
 import {
   useAddLeap,
@@ -11,11 +12,11 @@ import {
   useLeap,
   useResetPlayer,
   useTrackPlayer
-} from '../model';
+} from '../model'
 
-export const Player: FC = () => {
-  const { scene } = useGLTF(Model.Chicken);
-  const playerRef = useRef<THREE.Group>(null);
+export const Player = (): JSX.Element => {
+  const { scene } = useGLTF(Model.Chicken)
+  const playerRef = useRef<THREE.Group>(null)
 
   const playerState = useRef({
     leapsQueue: [],
@@ -23,25 +24,23 @@ export const Player: FC = () => {
       x: 0,
       y: 0
     },
-    rotation: {
-      z: 0
-    }
-  }).current;
+    rotation: { z: 0 }
+  }).current
 
-  useTrackPlayer(playerRef.current);
-  useHitDetection(playerRef.current);
+  useTrackPlayer(playerRef.current)
+  useHitDetection(playerRef.current)
 
-  useAddLeap(playerState);
-  useLeap(playerRef.current, playerState);
+  useAddLeap(playerState)
+  useLeap(playerRef.current, playerState)
 
-  useResetPlayer(playerRef.current, playerState);
+  useResetPlayer(playerRef.current, playerState)
 
   useEffect(() => {
     scene.traverse((obj: THREE.Object3D) => {
-      obj.castShadow = true;
-      obj.receiveShadow = true;
-    });
-  }, [scene]);
+      obj.castShadow = true
+      obj.receiveShadow = true
+    })
+  }, [scene])
 
   return (
     <group ref={playerRef}>
@@ -52,5 +51,5 @@ export const Player: FC = () => {
         scale={[2, 2, 2]}
       />
     </group>
-  );
-};
+  )
+}

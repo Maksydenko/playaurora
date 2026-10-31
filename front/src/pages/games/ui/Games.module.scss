@@ -1,12 +1,12 @@
 @use '@/app/styles/module' as m;
 
 :root {
-  --cardSize: 140px;
-  --cardSizeActive: calc(var(--cardSize) * 1.6);
-  --cardGap: 12px;
+  --card-size: 140px;
+  --card-gap: 12px;
 }
 
-$cardColor: rgba(0, 0, 0, 0.3);
+$card-color: rgb(0 0 0 / 0.3);
+$card-size-active: 220px;
 $transition: 0.3s ease 0s;
 
 .games {
@@ -14,8 +14,8 @@ $transition: 0.3s ease 0s;
 
   &__list {
     display: flex;
-    gap: var(--cardGap);
-    padding: 0 var(--cardGap);
+    gap: var(--card-gap);
+    padding: 0 var(--card-gap);
     transition: translate $transition;
   }
 
@@ -23,8 +23,11 @@ $transition: 0.3s ease 0s;
 
   &__logo {
     overflow: hidden;
-    background: $cardColor;
-    border-radius: 30px;
+    outline: 4px solid transparent;
+    outline-offset: 4px;
+    background: $card-color;
+    border-radius: 16%;
+    transition: outline-color $transition;
   }
 
   // .games__title
@@ -33,11 +36,12 @@ $transition: 0.3s ease 0s;
     position: absolute;
     top: 100%;
     left: 100%;
-    font-size: 40px;
+    font-size: 42px;
     font-weight: 300;
-    translate: 20px -52px;
+    letter-spacing: -0.01em;
+    translate: 24px -60px;
 
-    @include m.textNowrap;
+    @include m.text-nowrap;
   }
 
   // .games__item
@@ -48,10 +52,10 @@ $transition: 0.3s ease 0s;
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    width: var(--cardSize);
-    height: var(--cardSize);
+    width: var(--card-size);
+    height: var(--card-size);
     transition: $transition;
-    transition-property: inline-size, block-size, box-shadow, margin;
+    transition-property: width, height, margin;
 
     img {
       width: 100%;
@@ -64,22 +68,19 @@ $transition: 0.3s ease 0s;
 
     &_mini {
       .games__logo {
-        padding: 22%;
+        padding: 28%;
       }
     }
 
     // .games__item_active
 
     &_active {
-      width: var(--cardSizeActive);
-      height: var(--cardSizeActive);
+      width: $card-size-active;
+      height: $card-size-active;
       margin: 0 12px;
 
       .games__logo {
-        box-shadow:
-          0 0 0 3px #171717,
-          0 0 0 6px $cardColor,
-          0 0 0 6px rgba(255, 255, 255, 0.3);
+        outline-color: m.$focus-ring-color;
       }
     }
 

@@ -1,35 +1,40 @@
-import { useAtomValue } from 'jotai';
-import * as THREE from 'three';
+import { useAtomValue } from 'jotai'
+import type * as THREE from 'three'
 
-import { useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber'
 
-import { CameraPosition, LightPosition, Tile } from '../../config';
+import { CameraPosition, LightPosition, Tile } from '../../config'
 
-import { cameraAtom, lightAtom } from '../atoms';
+import { cameraAtom, lightAtom } from '../atoms'
 
+/**
+ * Keeps the camera and the light aligned with the chicken.
+ *
+ * @param playerElement - Chicken group in the scene.
+ */
 export const useTrackPlayer = (
   playerElement: null | THREE.Group<THREE.Object3DEventMap>
-) => {
-  const light = useAtomValue(lightAtom);
-  const camera = useAtomValue(cameraAtom);
+): void => {
+  const light = useAtomValue(lightAtom)
+  const camera = useAtomValue(cameraAtom)
 
   useFrame(() => {
     if (!playerElement) {
-      return;
+      return
     }
 
     const {
       position: { x, y }
-    } = playerElement;
+    } = playerElement
 
     if (camera) {
       camera.position.set(
         x + CameraPosition.X,
         y + CameraPosition.Y,
         CameraPosition.Z
-      );
-      camera.lookAt(x + Tile.Size / 3, y, 40);
-      camera.updateProjectionMatrix();
+      )
+      camera.lookAt(x + Tile.Size / 3, y, 40)
+      camera.updateProjectionMatrix()
     }
 
     if (light) {
@@ -37,9 +42,9 @@ export const useTrackPlayer = (
         x + LightPosition.X,
         y + LightPosition.Y,
         LightPosition.Z
-      );
-      light.target.position.set(x, y, 0);
-      light.target.updateMatrixWorld();
+      )
+      light.target.position.set(x, y, 0)
+      light.target.updateMatrixWorld()
     }
-  });
-};
+  })
+}

@@ -17,16 +17,16 @@
 
 html,
 body {
-  min-width: m.$minWidth + px;
+  min-width: m.$min-width + px;
   height: 100%;
 }
 
 body {
-  font-family: m.$primaryFontFamily;
-  font-size: m.$fontSize;
+  font-family: m.$primary-font-family;
+  font-size: m.$font-size;
   line-height: 1;
-  color: m.$mainColor;
-  background: m.$mainBgGradient;
+  color: m.$main-color;
+  background: m.$main-bg-gradient;
 }
 
 table {

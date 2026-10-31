@@ -1,36 +1,48 @@
-'use client';
+import type { JSX } from 'react'
 
-import { FC } from 'react';
-import clsx from 'clsx';
-import { useAtomValue, useSetAtom } from 'jotai';
+import clsx from 'clsx'
+import { useAtomValue, useSetAtom } from 'jotai'
 
-import { useWindowListener } from '@/shared/model';
-import { Transition } from '@/shared/ui';
+import { GamepadButton, useGamepad, useWindowListener } from '@/shared/model'
+import { Transition } from '@/shared/ui'
 
-import { gameStateAtom, resetGameAtom } from '../../model';
+import { gameStateAtom, resetGameAtom } from '../../model'
 
-import s from './GameOver.module.scss';
+import s from './GameOver.module.scss'
 
 interface GameOverProps {
-  className?: string;
+  className?: string
 }
 
-export const GameOver: FC<GameOverProps> = ({ className }) => {
-  const { isEnded } = useAtomValue(gameStateAtom);
-  const resetGame = useSetAtom(resetGameAtom);
+export const GameOver = ({ className }: GameOverProps): JSX.Element => {
+  const { isEnded } = useAtomValue(gameStateAtom)
+  const resetGame = useSetAtom(resetGameAtom)
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!isEnded || !['Enter', 'NumpadEnter', 'Space'].includes(e.code)) {
-      return;
+      return
     }
 
-    resetGame();
-  };
+    resetGame()
+  }
 
   useWindowListener({
     listener: handleKeyDown,
     type: 'keydown'
-  });
+  })
+
+  useGamepad({
+    onButton: btn => {
+      if (
+        !isEnded ||
+        (btn !== GamepadButton.Cross && btn !== GamepadButton.Options)
+      ) {
+        return
+      }
+
+      resetGame()
+    }
+  })
 
   return (
     <Transition className={clsx(s.gameOver, className)} isShow={isEnded}>
@@ -45,5 +57,5 @@ export const GameOver: FC<GameOverProps> = ({ className }) => {
         </button>
       </div>
     </Transition>
-  );
-};
+  )
+}

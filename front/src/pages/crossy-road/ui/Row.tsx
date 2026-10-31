@@ -1,17 +1,16 @@
-import { memo } from 'react';
+import { memo } from 'react'
 
-import { Direction } from '@/shared/model';
+import { Direction } from '@/shared/model'
 
-import { Tile, TileType, VehicleSpeed } from '../config';
+import { Tile, TileType, VehicleSpeed } from '../config'
 
-import { IRowData } from '../model';
+import type { RowData } from '../model'
+import { Car } from './Car'
+import { Tiles } from './Tiles'
+import { Tree } from './Tree'
 
-import { Car } from './Car';
-import { Tiles } from './Tiles';
-import { Tree } from './Tree';
-
-interface RowProps extends Partial<IRowData> {
-  rowIndex: number;
+interface RowProps extends Partial<RowData> {
+  rowIndex: number
 }
 
 export const Row = memo<RowProps>(function Row({
@@ -44,5 +43,5 @@ export const Row = memo<RowProps>(function Row({
         />
       ))}
     </group>
-  );
-});
+  )
+})

@@ -1,3 +1,4 @@
-export * from './useSwipe';
-export * from './useWheel';
-export * from './useWindowListener';
+export * from './useGamepad'
+export * from './useSwipe'
+export * from './useWheel'
+export * from './useWindowListener'

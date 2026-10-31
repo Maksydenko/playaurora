@@ -1,4 +1,7 @@
-import { atom } from 'jotai';
-import { DirectionalLight } from 'three';
+import { atom } from 'jotai'
+import type { DirectionalLight } from 'three'
 
-export const lightAtom = atom<DirectionalLight | null>(null);
+/**
+ * Directional light that follows the chicken.
+ */
+export const lightAtom = atom<DirectionalLight | null>(null)

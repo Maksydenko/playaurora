@@ -1,11 +1,17 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 
-import { TreeSize } from '../../config';
+import { TreeSize } from '../../config'
 
+/**
+ * Shared box used for a tree trunk.
+ */
 export const treeTrunkGeometry = new THREE.BoxGeometry(
   TreeSize.X,
   TreeSize.Y,
   TreeSize.Z
-);
+)
 
-export const treeLeavesGeometry = new THREE.BoxGeometry(24, 24, 1);
+/**
+ * Shared box scaled per tree for the crown.
+ */
+export const treeLeavesGeometry = new THREE.BoxGeometry(24, 24, 1)

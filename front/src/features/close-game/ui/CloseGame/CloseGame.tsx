@@ -1,46 +1,62 @@
-import { FC, ReactNode } from 'react';
-import { useSetAtom } from 'jotai';
+import type { JSX, ReactNode } from 'react'
 
-import { gameAtom, useWindowListener } from '@/shared/model';
+import { useSetAtom } from 'jotai'
+
+import {
+  gameAtom,
+  GamepadButton,
+  useGamepad,
+  useWindowListener
+} from '@/shared/model'
 
 interface CloseGameProps {
-  children?: ReactNode;
-  className?: string;
-  resetGame: () => void;
+  children?: ReactNode
+  className?: string
+  resetGame: () => void
 }
 
-export const CloseGame: FC<CloseGameProps> = ({
+export const CloseGame = ({
   children,
   className,
   resetGame
-}) => {
-  const setGame = useSetAtom(gameAtom);
+}: CloseGameProps): JSX.Element | null => {
+  const setGame = useSetAtom(gameAtom)
 
   const closeGame = () => {
-    resetGame();
-    setGame(null);
-  };
+    resetGame()
+    setGame(null)
+  }
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.code !== 'Escape') {
-      return;
+      return
     }
 
-    closeGame();
-  };
+    closeGame()
+  }
+
+  useGamepad({
+    onButton: btn => {
+      if (btn !== GamepadButton.PS) {
+        return
+      }
+
+      closeGame()
+    }
+  })
 
   useWindowListener({
     listener: handleKeyDown,
     type: 'keydown'
-  });
+  })
 
   if (!children) {
-    return null;
+    return null
   }
 
   return (
     <button className={className} type="button" onClick={closeGame}>
       {children}
     </button>
-  );
-};
+  )
+}

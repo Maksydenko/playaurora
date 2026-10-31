@@ -1,22 +1,23 @@
-import { FC, useEffect, useRef } from 'react';
-import { useSetAtom } from 'jotai';
-import { DirectionalLight } from 'three';
+import { type JSX, useEffect, useRef } from 'react'
 
-import { LightPosition } from '../config';
+import { useSetAtom } from 'jotai'
+import type { DirectionalLight } from 'three'
 
-import { lightAtom } from '../model';
+import { LightPosition } from '../config'
 
-export const Light: FC = () => {
-  const lightRef = useRef<DirectionalLight>(null!);
-  const setLight = useSetAtom(lightAtom);
+import { lightAtom } from '../model'
+
+export const Light = (): JSX.Element => {
+  const lightRef = useRef<DirectionalLight>(null!)
+  const setLight = useSetAtom(lightAtom)
 
   useEffect(() => {
-    setLight(lightRef.current);
+    setLight(lightRef.current)
 
     return () => {
-      setLight(null);
-    };
-  }, [setLight]);
+      setLight(null)
+    }
+  }, [setLight])
 
   return (
     <directionalLight
@@ -32,5 +33,5 @@ export const Light: FC = () => {
       shadow-mapSize-width={2048}
       castShadow
     />
-  );
-};
+  )
+}

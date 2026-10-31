@@ -1,4 +1,7 @@
-import { atom } from 'jotai';
-import { OrthographicCamera } from 'three';
+import { atom } from 'jotai'
+import type { OrthographicCamera } from 'three'
 
-export const cameraAtom = atom<null | OrthographicCamera>(null);
+/**
+ * Orthographic camera that follows the chicken.
+ */
+export const cameraAtom = atom<null | OrthographicCamera>(null)
